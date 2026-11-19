@@ -41,9 +41,15 @@ flowchart LR
 ```
 
 ### 🔹 Fase 1: Estabilización, Versionado y Modularidad (En Progreso)
-- [x] Inicialización del repositorio Git (`git init`) con `.gitignore` adecuado.
+- [x] Inicialización del repositorio Git (`git init`) con `.gitignore` adecuado en Lanzador y Asistente de Reunión.
 - [x] Documentación exhaustiva técnica y de usuario en la carpeta `doc/`.
 - [x] Formalización de dependencias en `requirements.txt`.
+- [x] **Hito Asistente de Reunión (`10_Asistente-de-reunion`):**
+  - Auditoría completa de rendimiento y latencia.
+  - Modo cápsula **HUD Zen** ultra-compacto (52 px) con onda reactiva de 5 barras según volumen de voz.
+  - Ocultación del scroll continuo de texto para eliminar distracción visual y carga gráfica.
+  - Grabación de audio raw en streaming a `.wav` (16 kHz mono) con consumo cero de RAM.
+  - Sincronización milimétrica audio-texto con formato dual estructurado: Markdown (`.md`) con Frontmatter YAML y Timeline JSON (`.json`) para reproductor interactivo futuro.
 - [ ] Extraer la lista de aplicaciones hacia un archivo de configuración desacoplado (`apps.json`), permitiendo añadir nuevas utilidades sin tocar código Python.
 - [ ] Verificación de existencia de las carpetas de las aplicaciones hermanas con fallbacks visuales elegantes si alguna app no está instalada.
 
@@ -53,12 +59,14 @@ flowchart LR
 - [ ] Selector visual de temas en la interfaz (Dark Carbon, Slate Minimal, OLED Black).
 - [ ] Opción de opacidad regulable para el panel desplegado.
 
-### 🔹 Fase 3: Gestión Integral del Ciclo de Vida de las Apps
+### 🔹 Fase 3: Gestión Integral del Ciclo de Vida y Ecosistema de Grabaciones
 - [ ] Menú contextual con clic derecho sobre cada tarjeta de aplicación:
   - Traer al frente / Enfocar.
   - Reiniciar aplicación.
   - Detener / Cerrar aplicación de forma limpia (vía señal por socket o terminación controlada).
   - Abrir carpeta contenedora en el explorador de Windows.
+- [ ] Extensión del protocolo tri-format (`.wav` + `.md` + `.json`) a `09_TraductorAudio` y `08_TraductorLocal`.
+- [ ] Prototipo del Frontend / Visor Intérprete Unificado (Web o Desktop) para explorar sesiones pasadas, reproducir audio con click-to-seek sobre el texto y exportar minutas.
 - [ ] Opción en el footer: "Cerrar todas las aplicaciones de IA activas".
 
 ### 🔹 Fase 4: Telemetría Local y Métricas
