@@ -1,0 +1,2 @@
+# Dependencias del Lanzador Flotante de Acceso Rápido (Suite de IA Local)
+PyQt6>=6.5.0,<6.9.0
