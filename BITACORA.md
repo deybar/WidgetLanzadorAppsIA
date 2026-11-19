@@ -40,16 +40,19 @@ flowchart LR
     Fase3 --> Fase4["Fase 4: Telemetría y Ecosistema"]
 ```
 
-### 🔹 Fase 1: Estabilización, Versionado y Modularidad (En Progreso)
-- [x] Inicialización del repositorio Git (`git init`) con `.gitignore` adecuado en Lanzador y Asistente de Reunión.
-- [x] Documentación exhaustiva técnica y de usuario en la carpeta `doc/`.
-- [x] Formalización de dependencias en `requirements.txt`.
+### 🔹 Fase 1: Estabilización, Versionado y Modularidad (Completada)
+- [x] Auditoría integral y estandarización estructural de las 4 herramientas de la Macro-Suite (`08_TraductorLocal`, `09_TraductorAudio`, `10_Asistente-de-reunion`, `12_Lanzador-Apps-IA`).
+- [x] Versionado unificado en Git bajo rama principal `main` con `.gitignore` profesional y repositorios limpios.
+- [x] Documentación exhaustiva técnica y de arquitectura en carpetas `doc/` en cada uno de los 4 proyectos.
+- [x] Bitácoras de desarrollo `BITACORA.md` con deudas técnicas, roadmap e historial semántico en cada aplicación.
+- [x] Formalización de dependencias en `requirements.txt` y entorno virtual unificado (`.audio_translator_venv`).
 - [x] **Hito Asistente de Reunión (`10_Asistente-de-reunion`):**
   - Auditoría completa de rendimiento y latencia.
   - Modo cápsula **HUD Zen** ultra-compacto (52 px) con onda reactiva de 5 barras según volumen de voz.
   - Ocultación del scroll continuo de texto para eliminar distracción visual y carga gráfica.
   - Grabación de audio raw en streaming a `.wav` (16 kHz mono) con consumo cero de RAM.
   - Sincronización milimétrica audio-texto con formato dual estructurado: Markdown (`.md`) con Frontmatter YAML y Timeline JSON (`.json`) para reproductor interactivo futuro.
+- [x] Estandarización de canales IPC (`QLocalServer` / `QLocalSocket`) con prefijo `*_SingleInstance_2026`.
 - [ ] Extraer la lista de aplicaciones hacia un archivo de configuración desacoplado (`apps.json`), permitiendo añadir nuevas utilidades sin tocar código Python.
 - [ ] Verificación de existencia de las carpetas de las aplicaciones hermanas con fallbacks visuales elegantes si alguna app no está instalada.
 
