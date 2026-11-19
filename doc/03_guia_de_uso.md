@@ -10,33 +10,34 @@ La interfaz posee dos estados claramente diferenciados:
 
 | Estado | Aspecto | Dimensiones | Función |
 |---|---|---|---|
-| **Colapsado (Solapa)** | Barra vertical pequeña con icono `⚡` y texto vertical `IA` | Ancho: 34 px<br>Alto: 100 px | Modo reposo. Se adhiere al borde sin obstruir el trabajo. |
-| **Expandido (Panel)** | Panel flotante oscuro con sombra y tarjetas de apps | Ancho: 285 px<br>Alto: 330 px | Muestra las 3 aplicaciones, su estado y opciones de control. |
+| **Colapsado (Icono Minimalista)** | Burbuja/botón semi-opaco con icono `⚡` | Ancho: 36 px<br>Alto: 36 px | Modo reposo discreto (60% opacidad). Se ilumina al 100% al pasar el cursor. |
+| **Expandido (Panel)** | Panel flotante oscuro con sombra y tarjetas de apps | Ancho: 285 px<br>Alto: 325 px | Muestra las 3 aplicaciones con su estado y opciones de control. |
 
 ---
 
 ## 2. Acciones del Ratón y Gestos
 
 ### A. Desplegar el Panel
-- **Un solo clic** sobre la solapa `⚡` en el borde de la pantalla desplegará el panel completo.
+- **Un solo clic** sobre el icono flotante `⚡` en el borde de la pantalla desplegará el panel completo.
 
-### B. Arrastre Vertical (Reposicionamiento de Altura)
-- Si la solapa se encuentra sobre algún botón o barra de otra aplicación que utilices frecuentemente:
-  1. Haz **clic sostenido (botón izquierdo)** sobre la solapa `⚡`.
-  2. Arrastra el cursor hacia arriba o hacia abajo.
-  3. Suelta el ratón.
-- La nueva altura (`pos_y`) se guardará automáticamente en `config.json` para tus próximas sesiones.
+### B. Movimiento Libre con el Ratón (Arrastre y Snap al Borde)
+- Puedes mover el icono a cualquier altura y a cualquier lado de tu pantalla libremente:
+  1. Haz **clic sostenido (botón izquierdo)** sobre el icono `⚡`.
+  2. Arrástralo libremente con el ratón por la pantalla a donde desees.
+  3. Al soltar el ratón, el icono se acopla magnéticamente (*snap*) de forma automática al borde de pantalla más cercano (izquierdo o derecho) a la altura exacta que elegiste.
+- La posición y el lado quedan guardados automáticamente en `config.json`.
 
 ### C. Alternar Lado de Pantalla (Izquierda ⇋ Derecha)
-- En el pie del panel desplegado, haz clic en el botón **`⇋ Cambiar Lado`**.
-- El lanzador volará instantáneamente al extremo opuesto de tu monitor (de derecha a izquierda o viceversa), adaptando la curvatura de sus bordes y sombras.
+- Además del arrastre libre, en el pie del panel desplegado puedes hacer clic en el botón **`⇋ Cambiar Lado`**.
+- El lanzador volará instantáneamente al extremo opuesto de tu monitor, adaptando su orientación y sombras.
 
-### D. Plegado Manual
+### D. Plegado Manual y Atajo Escape
 - Haz clic en el botón de flecha en la esquina superior derecha del panel (`▶` si está a la derecha, `◀` si está a la izquierda).
+- También puedes presionar la tecla **`Esc`** en cualquier momento para replegarlo de inmediato.
 
 ### E. Auto-Plegado por Inactividad
-- Si despliegas el panel y no realizas ninguna acción durante **8 segundos**, el panel se repliega automáticamente para no estorbar.
-- Si pasas el puntero del ratón sobre el panel (*hover*), el temporizador se reinicia para permitirte leer o decidir cómodamente.
+- Si despliegas el panel y no realizas ninguna acción durante **8 segundos**, el panel se repliega automáticamente al icono semi-opaco.
+- Si pasas el puntero del ratón sobre el panel (*hover*), el temporizador se reinicia.
 
 ---
 

@@ -103,13 +103,13 @@ def main():
         tray_icon.show()
 
         widget.show()
-        widget.expand_panel()
+        widget.collapse_panel()
 
         # Notificación informativa en la bandeja de Windows
         try:
             tray_icon.showMessage(
                 "⚡ Suite IA Local Activa",
-                "El lanzador flotante está visible en el borde de tu pantalla. Haz clic en la pestaña ⚡ para abrir el panel.",
+                "El icono flotante minimalista está listo en el borde de tu pantalla. Haz clic en ⚡ para desplegar o arrástralo libremente.",
                 QSystemTrayIcon.MessageIcon.Information,
                 3500
             )

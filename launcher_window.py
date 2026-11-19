@@ -194,6 +194,7 @@ class QuickLauncherWidget(QWidget):
         self.is_expanded = False
 
         self._press_pos = QPoint(0, 0)
+        self._drag_offset = QPoint(0, 0)
         self._is_dragging_flap = False
         self._has_dragged = False
 
@@ -211,14 +212,14 @@ class QuickLauncherWidget(QWidget):
         self.status_timer.start(2000)
         self.refresh_app_statuses()
 
-        # En el primer inicio, mostrar desplegado brevemente para que el usuario sepa dónde está
-        self.expand_panel()
+        self.collapse_panel()
 
     def _init_ui(self):
         self.setWindowTitle("Lanzador Suite IA Local")
         self.setWindowFlags(
             Qt.WindowType.FramelessWindowHint |
-            Qt.WindowType.WindowStaysOnTopHint
+            Qt.WindowType.WindowStaysOnTopHint |
+            Qt.WindowType.SubWindow
         )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
@@ -227,28 +228,25 @@ class QuickLauncherWidget(QWidget):
         main_layout.setSpacing(0)
 
         # -------------------------------------------------------------
-        # 1. SOLAPA OCULTA (FLAP) - Visible cuando está colapsado
+        # 1. ICONO FLOTANTE MINIMALISTA (Visible cuando está colapsado)
         # -------------------------------------------------------------
         self.flap = QFrame(self)
         self.flap.setObjectName("flap")
+        self.flap.setFixedSize(36, 36)
         self.flap.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.flap.setToolTip("⚡ Suite IA Local\n• Clic: Abrir menú\n• Arrastrar: Mover libremente por el borde")
+
         flap_layout = QVBoxLayout(self.flap)
-        flap_layout.setContentsMargins(4, 8, 4, 8)
+        flap_layout.setContentsMargins(0, 0, 0, 0)
         flap_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # Icono central de la solapa
+        # Icono central minimalista
         self.lbl_flap_icon = QLabel("⚡", self.flap)
-        self.lbl_flap_icon.setStyleSheet("color: #38bdf8; font-size: 15px; font-weight: bold;")
+        self.lbl_flap_icon.setStyleSheet("color: #38bdf8; font-size: 17px; font-weight: bold;")
         self.lbl_flap_icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
         flap_layout.addWidget(self.lbl_flap_icon)
 
-        # Texto vertical sutil "IA"
-        self.lbl_flap_text = QLabel("IA", self.flap)
-        self.lbl_flap_text.setStyleSheet("color: #a1a1aa; font-size: 10px; font-weight: 800; letter-spacing: 1px;")
-        self.lbl_flap_text.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        flap_layout.addWidget(self.lbl_flap_text)
-
-        # Evento de clic en solapa para expandir
+        # Eventos del ratón para arrastre libre y clic
         self.flap.mousePressEvent = self._on_flap_mouse_press
         self.flap.mouseMoveEvent = self._on_flap_mouse_move
         self.flap.mouseReleaseEvent = self._on_flap_mouse_release
@@ -271,11 +269,11 @@ class QuickLauncherWidget(QWidget):
         self.shadow.setOffset(0, 4)
         self.panel.setGraphicsEffect(self.shadow)
 
-        # Sombra exterior suave para la solapa
+        # Sombra exterior suave para el icono
         self.flap_shadow = QGraphicsDropShadowEffect(self)
-        self.flap_shadow.setBlurRadius(16)
-        self.flap_shadow.setColor(QColor(0, 0, 0, 180))
-        self.flap_shadow.setOffset(-2 if self.dock_side == "right" else 2, 2)
+        self.flap_shadow.setBlurRadius(14)
+        self.flap_shadow.setColor(QColor(0, 0, 0, 170))
+        self.flap_shadow.setOffset(-1 if self.dock_side == "right" else 1, 2)
         self.flap.setGraphicsEffect(self.flap_shadow)
 
         # Header del panel
@@ -291,7 +289,7 @@ class QuickLauncherWidget(QWidget):
 
         # Botón para plegar panel
         self.btn_collapse = QPushButton("▶" if self.dock_side == "right" else "◀", self.panel)
-        self.btn_collapse.setToolTip("Plegar al borde de la pantalla")
+        self.btn_collapse.setToolTip("Plegar al icono flotante")
         self.btn_collapse.setFixedSize(22, 22)
         self.btn_collapse.setStyleSheet("""
             background-color: #18181b;
@@ -319,7 +317,7 @@ class QuickLauncherWidget(QWidget):
         footer_layout.setSpacing(6)
 
         self.btn_side = QPushButton("⇋ Cambiar Lado", self.panel)
-        self.btn_side.setToolTip("Mover solapa al otro extremo de la pantalla")
+        self.btn_side.setToolTip("Mover icono al otro extremo de la pantalla")
         self.btn_side.setFixedHeight(22)
         self.btn_side.setStyleSheet("""
             background-color: #18181b;
@@ -359,21 +357,25 @@ class QuickLauncherWidget(QWidget):
     def _update_styles(self):
         """Aplica estilos con bordes redondeados orientados al borde de pantalla."""
         if self.dock_side == "right":
-            flap_radius = "border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 0px; border-bottom-right-radius: 0px;"
+            flap_radius = "border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 2px; border-bottom-right-radius: 2px;"
             panel_radius = "border-top-left-radius: 14px; border-bottom-left-radius: 14px; border-top-right-radius: 0px; border-bottom-right-radius: 0px;"
+            shadow_offset = -1
         else:
-            flap_radius = "border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
+            flap_radius = "border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-top-left-radius: 2px; border-bottom-left-radius: 2px;"
             panel_radius = "border-top-right-radius: 14px; border-bottom-right-radius: 14px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
+            shadow_offset = 1
+
+        self.flap_shadow.setOffset(shadow_offset, 2)
 
         self.flap.setStyleSheet(f"""
             QFrame#flap {{
-                background-color: #18181b;
-                border: 2px solid #38bdf8;
+                background-color: rgba(24, 24, 27, 0.82);
+                border: 1.5px solid rgba(56, 189, 248, 0.65);
                 {flap_radius}
             }}
             QFrame#flap:hover {{
-                background-color: #27272a;
-                border: 2px solid #0284c7;
+                background-color: rgba(39, 39, 42, 0.96);
+                border: 1.5px solid #38bdf8;
             }}
         """)
 
@@ -387,26 +389,28 @@ class QuickLauncherWidget(QWidget):
 
     def _apply_geometry(self):
         screen = QApplication.primaryScreen().availableGeometry()
-        screen_w = screen.width()
         screen_h = screen.height()
 
         # Asegurar que pos_y esté dentro de la pantalla visible
-        self.pos_y = max(40, min(screen_h - 380, self.pos_y))
+        self.pos_y = max(screen.top() + 8, min(screen.bottom() - 44, self.pos_y))
 
         if not self.is_expanded:
-            # Modo Solapa (Pestaña en el borde de pantalla)
-            w = 34
-            h = 100
+            # Modo Icono Flotante Minimalista
+            w = 36
+            h = 36
             x = (screen.right() - w + 1) if self.dock_side == "right" else screen.left()
             y = self.pos_y
             self.setGeometry(x, y, w, h)
+            self.setWindowOpacity(0.60)
         else:
             # Modo Panel Desplegado
             w = 285
-            h = 330
+            h = 325
             x = (screen.right() - w + 1) if self.dock_side == "right" else screen.left()
-            y = self.pos_y
+            ideal_y = self.pos_y - (h // 2) + 18
+            y = max(screen.top() + 8, min(screen.bottom() - h - 8, ideal_y))
             self.setGeometry(x, y, w, h)
+            self.setWindowOpacity(0.96)
 
     def expand_panel(self):
         """Despliega el panel con las 3 aplicaciones."""
@@ -421,7 +425,7 @@ class QuickLauncherWidget(QWidget):
             self.auto_hide_timer.start(8000)
 
     def collapse_panel(self):
-        """Pliega el panel de vuelta a la solapa minimalista en el borde."""
+        """Pliega el panel de vuelta al icono minimalista semi-opaco en el borde."""
         self.is_expanded = False
         self.panel.hide()
         self.flap.show()
@@ -450,37 +454,72 @@ class QuickLauncherWidget(QWidget):
             card.update_status(is_running)
 
     # -------------------------------------------------------------
-    # Gestión de Clic y Arrastre vertical de la solapa
+    # Gestión de Clic y Arrastre libre con el ratón
     # -------------------------------------------------------------
     def _on_flap_mouse_press(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton:
             self._is_dragging_flap = True
             self._press_pos = event.globalPosition().toPoint()
-            self._drag_start_y = event.globalPosition().toPoint().y() - self.pos_y
+            self._drag_offset = event.globalPosition().toPoint() - self.pos()
             self._has_dragged = False
+            self.setWindowOpacity(0.95)
 
     def _on_flap_mouse_move(self, event: QMouseEvent):
         if self._is_dragging_flap:
             cur_pos = event.globalPosition().toPoint()
             if (cur_pos - self._press_pos).manhattanLength() > 4:
                 self._has_dragged = True
-                new_y = cur_pos.y() - self._drag_start_y
-                screen = QApplication.primaryScreen().availableGeometry()
-                self.pos_y = max(40, min(screen.height() - 120, new_y))
-                self._apply_geometry()
+                # Mover libremente la ventana siguiendo al ratón en X y Y
+                new_pos = cur_pos - self._drag_offset
+                self.move(new_pos)
 
     def _on_flap_mouse_release(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton:
             self._is_dragging_flap = False
-            self.config["pos_y"] = self.pos_y
-            save_config(self.config)
+            if self._has_dragged:
+                # Snap al borde de pantalla más cercano (izq o der)
+                screen = QApplication.primaryScreen().availableGeometry()
+                cur_center_x = self.x() + self.width() // 2
+                screen_center_x = screen.left() + screen.width() // 2
 
-            # Si apenas se movió, interpretar como un clic y desplegar
-            if not self._has_dragged:
+                if cur_center_x < screen_center_x:
+                    self.dock_side = "left"
+                else:
+                    self.dock_side = "right"
+
+                # Posicionar a la altura donde lo soltó el usuario
+                new_y = self.y()
+                self.pos_y = max(screen.top() + 8, min(screen.bottom() - 44, new_y))
+
+                self.config["dock_side"] = self.dock_side
+                self.config["pos_y"] = self.pos_y
+                save_config(self.config)
+
+                self._update_styles()
+                self._apply_geometry()
+                self.setWindowOpacity(0.60)
+            else:
+                # Clic sin arrastre -> abrir/desplegar panel
                 self.expand_panel()
 
     def enterEvent(self, event):
-        # Si está expandido y el usuario tiene el cursor encima, renovar timer de inactividad
-        if self.is_expanded and self.config.get("auto_collapse", True):
-            self.auto_hide_timer.start(7000)
+        if not self.is_expanded:
+            # Al pasar el cursor, resaltar con opacidad completa
+            self.setWindowOpacity(1.0)
+        else:
+            # Si está expandido, renovar temporizador de inactividad
+            if self.config.get("auto_collapse", True):
+                self.auto_hide_timer.start(8000)
         super().enterEvent(event)
+
+    def leaveEvent(self, event):
+        if not self.is_expanded and not self._is_dragging_flap:
+            # Al retirar el cursor, volver a semi-opaco
+            self.setWindowOpacity(0.60)
+        super().leaveEvent(event)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            if self.is_expanded:
+                self.collapse_panel()
+        super().keyPressEvent(event)

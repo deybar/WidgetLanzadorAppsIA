@@ -71,6 +71,15 @@ flowchart LR
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/) y versionado semántico.
 
+### [1.1.0] - 2026-11-19
+#### Añadido / Mejorado
+- **Visualizador Flotante Minimalista:** Rediseño del disparador flotante a un botón compacto de 36x36 px con únicamente el icono `⚡` (eliminado el texto vertical "IA" y el bloque grande de 100px).
+- **Semi-opacidad Dinámica:** En reposo se muestra semi-opaco (opacidad al 60%), subiendo automáticamente al 100% al pasar el cursor o durante el arrastre para no estorbar el contenido de pantalla.
+- **Movimiento Libre con Ratón:** Arrastre continuo y fluido en tiempo real en coordenadas X e Y con el ratón por toda la pantalla.
+- **Auto-Snap a Bordes de Pantalla:** Al soltar el icono con el ratón, se acopla magnéticamente al borde más cercano (izquierdo o derecho) a la altura exacta deseada y persiste la posición en `config.json`.
+- **Alineación Inteligente del Panel:** Al expandirse, el panel se despliega centrado verticalmente respecto a la posición del icono flotante.
+- **Atajo Escape:** Posibilidad de colapsar rápidamente el panel presionando la tecla `Esc`.
+
 ### [1.0.0] - 2026-11-19
 #### Añadido
 - Repositorio Git inicial para versionado y trazabilidad del proyecto.
