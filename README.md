@@ -1,6 +1,6 @@
 # ⚡ Lanzador Flotante de Acceso Rápido (Suite de IA Local) 🚀
 
-> **Acceso rápido y discreto para tus 3 herramientas de Inteligencia Artificial 100% Locales y Offline.** Se oculta en el extremo de tu pantalla en una sutil solapa con icono `⚡` y, al hacer clic, despliega un panel flotante para iniciar o activar al instante cualquiera de las aplicaciones.
+> **Acceso rápido y discreto para tus 3 herramientas de Inteligencia Artificial 100% Locales y Offline.** Se oculta en el extremo de tu pantalla en una sutil insignia semi-opaca ultra-compacta de **20x20 px** con icono `⚡`. Se puede mover libremente con el ratón por toda la pantalla acoplándose magnéticamente al borde más cercano, y al hacer clic despliega un panel flotante para iniciar o activar al instante cualquiera de las aplicaciones.
 
 ---
 
@@ -18,19 +18,21 @@
 
 3. **🎙️ Asistente de Reunión y Minutas (`10_Asistente-de-reunion`):**
    - Icono: `🎙️`
-   - Captura dual simultánea (PC + Micrófono), diarización de interlocutores y registro fiel segundo a segundo `[HH:MM:SS]`.
-   - Agente local de IA que extrae compromisos adquiridos (*action items*), temas clave de estudio y genera la minuta ejecutiva al final del archivo `.txt`.
+   - **Modo HUD Zen minimalista (52 px):** Onda de audio reactiva animada que pulsa en tiempo real según el volumen de la voz, cronómetro de sesión e indicador dinámico de interlocutor (`🎙️ Tú` / `🔊 Colegas`).
+   - **Grabación Streaming a `.wav`:** Audio raw de la llamada grabado continuamente a disco con 0 overhead de RAM.
+   - **Ecosistema Tri-Formato Sincronizado:** Genera simultáneamente `.wav` (audio), `.md` (minuta con Frontmatter YAML y tareas interactivas `- [ ]`) y `.json` (timeline para reproductores interactivos futuros con *click-to-seek*).
+   - Diarización acústica en CPU y Agente local de IA para compromisos (*action items*) y temas clave.
 
 ---
 
 ## ✨ Características del Lanzador
 
-- **Solapa Oculta Minimalista:** Se adhiere al borde de tu pantalla ocupando apenas 26 px de ancho. No estorba ni tapa tus ventanas activas.
-- **Arrastrable Verticalmente:** Puedes hacer clic y arrastrar la solapa hacia arriba o hacia abajo a lo largo del borde para situarla a la altura deseada.
-- **Alternancia de Lado:** Puedes cambiar fácilmente si prefieres tener la solapa en el **Borde Derecho** o en el **Borde Izquierdo** de la pantalla con el botón `⇋ Cambiar Lado`.
+- **Insignia Flotante Ultra-Compacta (20x20 px):** Diseño minimalista con semi-opacidad dinámica (72% en reposo, 100% al pasar el cursor o arrastrar).
+- **Arrastre 2D Libre con Ratón:** Puedes mover el icono libremente por cualquier parte de la pantalla.
+- **Auto-Snap Magnético a Bordes:** Al soltar el ratón, se acopla suavemente al borde más cercano (izquierdo o derecho) a la altura exacta deseada y persiste la posición en `config.json`.
 - **Detección de Estado en Vivo (Activo / Inactivo):** Muestra un punto luminoso verde `●` si la aplicación ya se encuentra abierta en segundo plano, o un punto gris `○` si no está iniciada.
 - **Single Instance Focus:** Si una aplicación ya está abierta, hacer clic sobre ella no duplica procesos; la trae inmediatamente al frente y la enfoca.
-- **Auto-Plegado Inteligente:** Al hacer clic en una aplicación o tras unos segundos de inactividad, el panel se repliega automáticamente al borde para no molestar.
+- **Auto-Plegado Inteligente:** Al hacer clic en una aplicación, pulsar `Esc` o tras unos segundos de inactividad, el panel se repliega automáticamente para no molestar.
 - **Bandeja del Sistema:** Icono en la barra de tareas de Windows para abrir el panel o acceder rápidamente a las herramientas.
 
 ---
