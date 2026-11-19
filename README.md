@@ -40,3 +40,11 @@
 - **`iniciar.vbs`** *(Recomendado)*: Inicio 100% silencioso e invisible en segundo plano.
 - **`iniciar.bat`**: Lanzador por lotes estándar.
 - **`debug_consola.bat`**: Lanzador con ventana de depuración visible.
+
+---
+
+## 📖 Documentación y Bitácora
+
+- **[Documentación Técnica Completa](doc/README.md):** Manuales de arquitectura, IPC, dependencias, uso y herramientas.
+- **[Bitácora de Desarrollo y Roadmap](BITACORA.md):** Diagnóstico, deudas técnicas identificadas, backlog priorizado y control de versiones.
+
