@@ -10,7 +10,7 @@ La interfaz posee dos estados claramente diferenciados:
 
 | Estado | Aspecto | Dimensiones | Función |
 |---|---|---|---|
-| **Colapsado (Icono Minimalista)** | Burbuja/botón semi-opaco con icono `⚡` | Ancho: 36 px<br>Alto: 36 px | Modo reposo discreto (60% opacidad). Se ilumina al 100% al pasar el cursor. |
+| **Colapsado (Icono Minimalista)** | Burbuja ultra-compacta semi-opaca con icono `⚡` | Ancho: 20 px<br>Alto: 20 px | Modo reposo discreto (72% opacidad). Se ilumina al 100% al pasar el cursor. |
 | **Expandido (Panel)** | Panel flotante oscuro con sombra y tarjetas de apps | Ancho: 285 px<br>Alto: 325 px | Muestra las 3 aplicaciones con su estado y opciones de control. |
 
 ---

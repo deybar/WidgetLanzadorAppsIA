@@ -33,15 +33,15 @@ for a in APPS_CONFIG:
     assert exists, f"No se encontro el vbs de {a['title']} en {a['vbs_path']}"
 print("=> TEST 1 superado exitosamente.")
 
-# Test 2: Instanciar el Widget y verificar geometría colapsada (minimalista 38x38)
+# Test 2: Instanciar el Widget y verificar geometría colapsada (minimalista 20x20)
 print("\n[TEST 2] Creacion de QuickLauncherWidget y modo colapsado:")
 w = QuickLauncherWidget()
 w.show()
 print(f"  Geometria colapsada: {w.geometry().width()}x{w.geometry().height()} en ({w.x()}, {w.y()})")
 print(f"  Opacidad en reposo: {w.windowOpacity():.2f}")
 print(f"  Visibilidad Flap (icono): {w.flap.isVisible()} | Panel: {w.panel.isVisible()}")
-assert w.width() == 38, f"Se esperaba ancho 38, obtenido {w.width()}"
-assert w.height() == 38, f"Se esperaba alto 38, obtenido {w.height()}"
+assert w.width() == 20, f"Se esperaba ancho 20, obtenido {w.width()}"
+assert w.height() == 20, f"Se esperaba alto 20, obtenido {w.height()}"
 assert w.flap.isVisible() == True, "El icono flotante deberia ser visible colapsado"
 assert w.panel.isVisible() == False, "El panel deberia estar oculto colapsado"
 print("=> TEST 2 superado exitosamente.")
@@ -108,10 +108,10 @@ if cur_center_x < screen_center_x:
     w.dock_side = "left"
 else:
     w.dock_side = "right"
-w.pos_y = max(screen.top() + 8, min(screen.bottom() - 48, w.y()))
+w.pos_y = max(screen.top() + 4, min(screen.bottom() - 26, w.y()))
 w._apply_geometry()
 print(f"  Posicion tras auto-snap magnetico: ({w.x()}, {w.y()}) en borde '{w.dock_side}'")
-assert w.width() == 38 and w.height() == 38
+assert w.width() == 20 and w.height() == 20
 print("=> TEST 6 superado exitosamente.")
 
 print("\n" + "=" * 60)

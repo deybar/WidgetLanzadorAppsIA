@@ -231,7 +231,7 @@ class QuickLauncherWidget(QWidget):
         # -------------------------------------------------------------
         self.flap = QFrame(self)
         self.flap.setObjectName("flap")
-        self.flap.setFixedSize(38, 38)
+        self.flap.setFixedSize(20, 20)
         self.flap.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.flap.setToolTip("⚡ Suite IA Local\n• Clic: Abrir menú\n• Arrastrar: Mover libremente por el borde")
 
@@ -239,9 +239,9 @@ class QuickLauncherWidget(QWidget):
         flap_layout.setContentsMargins(0, 0, 0, 0)
         flap_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # Icono central minimalista
+        # Icono central minimalista ultra-compacto
         self.lbl_flap_icon = QLabel("⚡", self.flap)
-        self.lbl_flap_icon.setStyleSheet("color: #38bdf8; font-size: 18px; font-weight: bold;")
+        self.lbl_flap_icon.setStyleSheet("color: #38bdf8; font-size: 11px; font-weight: bold;")
         self.lbl_flap_icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
         flap_layout.addWidget(self.lbl_flap_icon)
 
@@ -270,9 +270,9 @@ class QuickLauncherWidget(QWidget):
 
         # Sombra exterior suave para el icono
         self.flap_shadow = QGraphicsDropShadowEffect(self)
-        self.flap_shadow.setBlurRadius(14)
-        self.flap_shadow.setColor(QColor(0, 0, 0, 170))
-        self.flap_shadow.setOffset(-1 if self.dock_side == "right" else 1, 2)
+        self.flap_shadow.setBlurRadius(8)
+        self.flap_shadow.setColor(QColor(0, 0, 0, 160))
+        self.flap_shadow.setOffset(-1 if self.dock_side == "right" else 1, 1)
         self.flap.setGraphicsEffect(self.flap_shadow)
 
         # Header del panel
@@ -356,25 +356,25 @@ class QuickLauncherWidget(QWidget):
     def _update_styles(self):
         """Aplica estilos con bordes redondeados orientados al borde de pantalla."""
         if self.dock_side == "right":
-            flap_radius = "border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 2px; border-bottom-right-radius: 2px;"
+            flap_radius = "border-top-left-radius: 6px; border-bottom-left-radius: 6px; border-top-right-radius: 0px; border-bottom-right-radius: 0px;"
             panel_radius = "border-top-left-radius: 14px; border-bottom-left-radius: 14px; border-top-right-radius: 0px; border-bottom-right-radius: 0px;"
             shadow_offset = -1
         else:
-            flap_radius = "border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-top-left-radius: 2px; border-bottom-left-radius: 2px;"
+            flap_radius = "border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
             panel_radius = "border-top-right-radius: 14px; border-bottom-right-radius: 14px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
             shadow_offset = 1
 
-        self.flap_shadow.setOffset(shadow_offset, 2)
+        self.flap_shadow.setOffset(shadow_offset, 1)
 
         self.flap.setStyleSheet(f"""
             QFrame#flap {{
-                background-color: rgba(24, 24, 27, 0.82);
-                border: 1.5px solid rgba(56, 189, 248, 0.65);
+                background-color: rgba(24, 24, 27, 0.85);
+                border: 1px solid rgba(56, 189, 248, 0.70);
                 {flap_radius}
             }}
             QFrame#flap:hover {{
-                background-color: rgba(39, 39, 42, 0.96);
-                border: 1.5px solid #38bdf8;
+                background-color: rgba(39, 39, 42, 0.98);
+                border: 1px solid #38bdf8;
             }}
         """)
 
@@ -391,12 +391,12 @@ class QuickLauncherWidget(QWidget):
         screen_h = screen.height()
 
         # Asegurar que pos_y esté dentro de la pantalla visible
-        self.pos_y = max(screen.top() + 8, min(screen.bottom() - 48, self.pos_y))
+        self.pos_y = max(screen.top() + 4, min(screen.bottom() - 26, self.pos_y))
 
         if not self.is_expanded:
-            # Modo Icono Flotante Minimalista
-            w = 38
-            h = 38
+            # Modo Icono Flotante Minimalista 20x20
+            w = 20
+            h = 20
             x = (screen.right() - w + 1) if self.dock_side == "right" else screen.left()
             y = self.pos_y
             self.setGeometry(x, y, w, h)
@@ -406,7 +406,7 @@ class QuickLauncherWidget(QWidget):
             w = 285
             h = 325
             x = (screen.right() - w + 1) if self.dock_side == "right" else screen.left()
-            ideal_y = self.pos_y - (h // 2) + 19
+            ideal_y = self.pos_y - (h // 2) + 10
             y = max(screen.top() + 8, min(screen.bottom() - h - 8, ideal_y))
             self.setGeometry(x, y, w, h)
             self.setWindowOpacity(0.96)
@@ -487,7 +487,7 @@ class QuickLauncherWidget(QWidget):
 
                 # Posicionar a la altura donde lo soltó el usuario
                 new_y = self.y()
-                self.pos_y = max(screen.top() + 8, min(screen.bottom() - 48, new_y))
+                self.pos_y = max(screen.top() + 4, min(screen.bottom() - 26, new_y))
 
                 self.config["dock_side"] = self.dock_side
                 self.config["pos_y"] = self.pos_y
