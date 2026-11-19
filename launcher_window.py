@@ -218,8 +218,7 @@ class QuickLauncherWidget(QWidget):
         self.setWindowTitle("Lanzador Suite IA Local")
         self.setWindowFlags(
             Qt.WindowType.FramelessWindowHint |
-            Qt.WindowType.WindowStaysOnTopHint |
-            Qt.WindowType.SubWindow
+            Qt.WindowType.WindowStaysOnTopHint
         )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
@@ -232,7 +231,7 @@ class QuickLauncherWidget(QWidget):
         # -------------------------------------------------------------
         self.flap = QFrame(self)
         self.flap.setObjectName("flap")
-        self.flap.setFixedSize(36, 36)
+        self.flap.setFixedSize(38, 38)
         self.flap.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.flap.setToolTip("⚡ Suite IA Local\n• Clic: Abrir menú\n• Arrastrar: Mover libremente por el borde")
 
@@ -242,7 +241,7 @@ class QuickLauncherWidget(QWidget):
 
         # Icono central minimalista
         self.lbl_flap_icon = QLabel("⚡", self.flap)
-        self.lbl_flap_icon.setStyleSheet("color: #38bdf8; font-size: 17px; font-weight: bold;")
+        self.lbl_flap_icon.setStyleSheet("color: #38bdf8; font-size: 18px; font-weight: bold;")
         self.lbl_flap_icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
         flap_layout.addWidget(self.lbl_flap_icon)
 
@@ -392,22 +391,22 @@ class QuickLauncherWidget(QWidget):
         screen_h = screen.height()
 
         # Asegurar que pos_y esté dentro de la pantalla visible
-        self.pos_y = max(screen.top() + 8, min(screen.bottom() - 44, self.pos_y))
+        self.pos_y = max(screen.top() + 8, min(screen.bottom() - 48, self.pos_y))
 
         if not self.is_expanded:
             # Modo Icono Flotante Minimalista
-            w = 36
-            h = 36
+            w = 38
+            h = 38
             x = (screen.right() - w + 1) if self.dock_side == "right" else screen.left()
             y = self.pos_y
             self.setGeometry(x, y, w, h)
-            self.setWindowOpacity(0.60)
+            self.setWindowOpacity(0.72)
         else:
             # Modo Panel Desplegado
             w = 285
             h = 325
             x = (screen.right() - w + 1) if self.dock_side == "right" else screen.left()
-            ideal_y = self.pos_y - (h // 2) + 18
+            ideal_y = self.pos_y - (h // 2) + 19
             y = max(screen.top() + 8, min(screen.bottom() - h - 8, ideal_y))
             self.setGeometry(x, y, w, h)
             self.setWindowOpacity(0.96)
@@ -469,7 +468,6 @@ class QuickLauncherWidget(QWidget):
             cur_pos = event.globalPosition().toPoint()
             if (cur_pos - self._press_pos).manhattanLength() > 4:
                 self._has_dragged = True
-                # Mover libremente la ventana siguiendo al ratón en X y Y
                 new_pos = cur_pos - self._drag_offset
                 self.move(new_pos)
 
@@ -489,7 +487,7 @@ class QuickLauncherWidget(QWidget):
 
                 # Posicionar a la altura donde lo soltó el usuario
                 new_y = self.y()
-                self.pos_y = max(screen.top() + 8, min(screen.bottom() - 44, new_y))
+                self.pos_y = max(screen.top() + 8, min(screen.bottom() - 48, new_y))
 
                 self.config["dock_side"] = self.dock_side
                 self.config["pos_y"] = self.pos_y
@@ -497,25 +495,22 @@ class QuickLauncherWidget(QWidget):
 
                 self._update_styles()
                 self._apply_geometry()
-                self.setWindowOpacity(0.60)
+                self.setWindowOpacity(0.72)
             else:
                 # Clic sin arrastre -> abrir/desplegar panel
                 self.expand_panel()
 
     def enterEvent(self, event):
         if not self.is_expanded:
-            # Al pasar el cursor, resaltar con opacidad completa
             self.setWindowOpacity(1.0)
         else:
-            # Si está expandido, renovar temporizador de inactividad
             if self.config.get("auto_collapse", True):
                 self.auto_hide_timer.start(8000)
         super().enterEvent(event)
 
     def leaveEvent(self, event):
         if not self.is_expanded and not self._is_dragging_flap:
-            # Al retirar el cursor, volver a semi-opaco
-            self.setWindowOpacity(0.60)
+            self.setWindowOpacity(0.72)
         super().leaveEvent(event)
 
     def keyPressEvent(self, event):

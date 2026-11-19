@@ -35,10 +35,12 @@ def ensure_single_instance(app, on_activate_cb) -> bool:
         def handle_conn():
             client = server.nextPendingConnection()
             if client:
-                if client.waitForReadyRead(300):
+                if client.bytesAvailable() > 0 or client.waitForReadyRead(300):
                     data = client.readAll().data().decode("utf-8", errors="ignore")
                     if "ACTIVATE" in data:
                         on_activate_cb()
+                else:
+                    on_activate_cb()
                 client.disconnectFromServer()
         server.newConnection.connect(handle_conn)
         app._server = server
@@ -70,6 +72,9 @@ def main():
 
         def on_activate():
             widget.show()
+            widget.setWindowState(widget.windowState() & ~Qt.WindowState.WindowMinimized | Qt.WindowState.WindowActive)
+            widget.raise_()
+            widget.activateWindow()
             widget.expand_panel()
 
         if not ensure_single_instance(app, on_activate):
@@ -103,13 +108,15 @@ def main():
         tray_icon.show()
 
         widget.show()
-        widget.collapse_panel()
+        widget.raise_()
+        widget.activateWindow()
+        widget.expand_panel()
 
         # Notificación informativa en la bandeja de Windows
         try:
             tray_icon.showMessage(
                 "⚡ Suite IA Local Activa",
-                "El icono flotante minimalista está listo en el borde de tu pantalla. Haz clic en ⚡ para desplegar o arrástralo libremente.",
+                "El lanzador está listo en el borde de tu pantalla. Haz clic en ⚡ para desplegar o arrástralo libremente.",
                 QSystemTrayIcon.MessageIcon.Information,
                 3500
             )
