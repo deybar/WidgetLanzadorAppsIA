@@ -5,6 +5,9 @@ cd /d "%APP_DIR%"
 
 set "PYTHONW=C:\Users\%USERNAME%\.audio_translator_venv\Scripts\pythonw.exe"
 if not exist "%PYTHONW%" (
+    set "PYTHONW=C:\Users\%USERNAME%\.local_translator_venv\Scripts\pythonw.exe"
+)
+if not exist "%PYTHONW%" (
     set "PYTHONW=%APP_DIR%\.venv\Scripts\pythonw.exe"
 )
 if not exist "%PYTHONW%" (

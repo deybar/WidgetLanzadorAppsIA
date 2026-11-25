@@ -22,8 +22,9 @@ El proyecto funciona como un **orquestador visual e IPC (Inter-Process Communica
 
 | ID | Área | Descripción de la Oportunidad / Deuda | Prioridad |
 |---|---|---|---|
-| **DT-01** | **Configuración** | Lista de aplicaciones (`APPS_CONFIG`) acoplada estáticamente en el código fuente de `launcher_window.py`. Debería poder leerse y extenderse desde `config.json` o un `apps.json`. | **Alta** |
-| **DT-02** | **Ciclo de Vida** | El lanzador puede iniciar aplicaciones y traerlas al frente, pero no ofrece la opción de detenerlas/cerrarlas directamente desde la UI o el menú contextual. | **Media** |
+| **DT-01** | **Configuración** | Lista de aplicaciones acoplada en `launcher_window.py`. Externalizada a `apps.json` con resolución dinámica de carpetas (`1_*` y legacy `08_*..10_*`). | **RESUELTO (v1.2.0)** |
+| **DT-02** | **Ciclo de Vida** | Faltaba menú para cerrar o enfocar apps y prevención de doble clic rápido al arrancar. Añadido menú contextual (*Traer al frente*, *Detener aplicación* vía señal `QUIT`, *Abrir carpeta*) y estado `⏳` de arranque. | **RESUELTO (v1.2.0)** |
+| **DT-03** | **Estabilidad IPC** | Sondeo de estado usando `QLocalSocket` en hilos secundarios causaba `RuntimeError` al cerrar. Reemplazado en Windows por llamada nativa `WaitNamedPipeW` vía `ctypes`. | **RESUELTO (v1.2.0)** |
 | **DT-03** | **Atajos Globales** | Carece de combinación de teclas global (Global Hotkey como `Win+Alt+Space` o `Ctrl+Shift+A`) para invocar el panel sin usar el ratón. | **Media** |
 | **DT-04** | **Resiliencia Venv** | Las rutas al entorno virtual están prefijadas a `C:\Users\%USERNAME%\.audio_translator_venv`. Debe formalizarse una detección más flexible y portable. | **Media** |
 | **DT-05** | **Monitor de Recursos** | No se visualiza el consumo de memoria RAM o VRAM de las apps de IA activas en tiempo real. | **Baja** |
@@ -53,8 +54,8 @@ flowchart LR
   - Grabación de audio raw en streaming a `.wav` (16 kHz mono) con consumo cero de RAM.
   - Sincronización milimétrica audio-texto con formato dual estructurado: Markdown (`.md`) con Frontmatter YAML y Timeline JSON (`.json`) para reproductor interactivo futuro.
 - [x] Estandarización de canales IPC (`QLocalServer` / `QLocalSocket`) con prefijo `*_SingleInstance_2026`.
-- [ ] Extraer la lista de aplicaciones hacia un archivo de configuración desacoplado (`apps.json`), permitiendo añadir nuevas utilidades sin tocar código Python.
-- [ ] Verificación de existencia de las carpetas de las aplicaciones hermanas con fallbacks visuales elegantes si alguna app no está instalada.
+- [x] Extraer la lista de aplicaciones hacia un archivo de configuración desacoplado (`apps.json`), permitiendo añadir nuevas utilidades sin tocar código Python.
+- [x] Verificación de existencia de las carpetas de las aplicaciones hermanas con fallbacks visuales elegantes si alguna app no está instalada.
 
 ### 🔹 Fase 2: Experiencia de Usuario y Atajos Globales
 - [ ] Soporte para Atajo de Teclado Global en Windows (ej. `Alt + Shift + Z` o configurable) para abrir/plegar el panel flotante.
@@ -81,6 +82,16 @@ flowchart LR
 ## 📝 4. Registro Histórico de Cambios (Changelog)
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/) y versionado semántico.
+
+### [1.2.0] - 2026-11-20
+#### Añadido / Mejorado
+- **Catálogo Dinámico `apps.json`:** Carga desacoplada de aplicaciones mediante `load_apps_config()` y `_resolve_app_dir()`, soportando tanto la nueva nomenclatura (`1_TraductorLocal`, `2_TraductorAudio`, `3_Asistente-de-reunion`) como rutas legacy (`08_*`, `09_*`, `10_*`) y futuras herramientas.
+- **Lanzamiento Directo sin Bloqueos de Google Drive (`subprocess.Popen`):** Ejecución directa mediante `pythonw.exe` / `python.exe` del entorno `.audio_translator_venv` sin depender exclusivamente de `iniciar.vbs`, más indicador visual de arranque `⏳` para evitar lanzamientos duplicados en frío.
+- **Gestión Completa de Ciclo de Vida (Menú Contextual):** Clic derecho sobre cada tarjeta permite *Traer al frente / Enfocar*, *Detener aplicación* (señal IPC `QUIT`) y *Abrir carpeta*.
+
+#### Corregido
+- **Sondeo Seguro de Named Pipes (`WaitNamedPipeW`):** Sustituido el uso de `QLocalSocket` en hilos trabajadores dentro de `check_socket_status()` por `ctypes.windll.kernel32.WaitNamedPipeW`, eliminando errores `RuntimeError: wrapped C/C++ object of type QLocalSocket has been deleted` durante el cierre de la aplicación o de las pruebas.
+- **Limpieza de Instancias Residuales:** Validación contra procesos antiguos que retenían el pipe `LanzadorSuiteIA_SingleInstance_2026` tras migrar de carpeta a `C:\dev\08_MiniToolsAI`.
 
 ### [1.1.0] - 2026-11-19
 #### Añadido / Mejorado

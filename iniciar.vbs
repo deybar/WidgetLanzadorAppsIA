@@ -11,10 +11,16 @@ If Not FSO.FileExists(strPython) Then
     strPython = "C:\Users\" & strUser & "\.audio_translator_venv\Scripts\python.exe"
 End If
 If Not FSO.FileExists(strPython) Then
+    strPython = "C:\Users\" & strUser & "\.local_translator_venv\Scripts\pythonw.exe"
+End If
+If Not FSO.FileExists(strPython) Then
     strPython = strAppDir & "\.venv\Scripts\pythonw.exe"
 End If
 If Not FSO.FileExists(strPython) Then
     strPython = strAppDir & "\.venv\Scripts\python.exe"
+End If
+If Not FSO.FileExists(strPython) Then
+    strPython = "pythonw.exe"
 End If
 
 ' 0 = vbHide (100% silencioso sin ventana negra de consola CMD)

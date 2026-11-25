@@ -1,0 +1,35 @@
+[
+    {
+        "id": "traductor_local",
+        "title": "Traductor de Texto",
+        "subtitle": "Selección con ratón (EN ↔ ES)",
+        "icon": "文A",
+        "icon_bg": "#2563eb",
+        "socket": "TraductorLocal_SingleInstance_2026",
+        "folder_candidates": ["1_TraductorLocal", "08_TraductorLocal"],
+        "entry_script": "main.py",
+        "vbs_script": "iniciar.vbs"
+    },
+    {
+        "id": "traductor_audio",
+        "title": "Traductor de Audio",
+        "subtitle": "Subtítulos en tiempo real EN ➔ ES",
+        "icon": "💬",
+        "icon_bg": "#0284c7",
+        "socket": "TraductorAudio_SingleInstance_2026",
+        "folder_candidates": ["2_TraductorAudio", "09_TraductorAudio"],
+        "entry_script": "main.py",
+        "vbs_script": "iniciar.vbs"
+    },
+    {
+        "id": "asistente_reunion",
+        "title": "Asistente de Reunión",
+        "subtitle": "Transcripción, notas y minuta",
+        "icon": "🎙️",
+        "icon_bg": "#10b981",
+        "socket": "AsistenteReunion_SingleInstance_2026",
+        "folder_candidates": ["3_Asistente-de-reunion", "10_Asistente-de-reunion"],
+        "entry_script": "main.py",
+        "vbs_script": "iniciar.vbs"
+    }
+]

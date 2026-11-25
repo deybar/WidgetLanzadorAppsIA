@@ -20,10 +20,10 @@ from launcher_window import QuickLauncherWidget, APPS_CONFIG, launch_or_activate
 
 SOCKET_NAME = "LanzadorSuiteIA_SingleInstance_2026"
 
-def ensure_single_instance(app, on_activate_cb) -> bool:
+def ensure_single_instance(app, on_activate_cb, on_quit_cb=None) -> bool:
     test_socket = QLocalSocket()
     test_socket.connectToServer(SOCKET_NAME)
-    if test_socket.waitForConnected(300):
+    if test_socket.waitForConnected(800):
         test_socket.write(b"ACTIVATE")
         test_socket.waitForBytesWritten(300)
         test_socket.disconnectFromServer()
@@ -37,10 +37,13 @@ def ensure_single_instance(app, on_activate_cb) -> bool:
             if client:
                 if client.bytesAvailable() > 0 or client.waitForReadyRead(300):
                     data = client.readAll().data().decode("utf-8", errors="ignore")
-                    if "ACTIVATE" in data:
+                    if "QUIT" in data:
+                        if on_quit_cb:
+                            on_quit_cb()
+                        else:
+                            app.quit()
+                    elif "ACTIVATE" in data:
                         on_activate_cb()
-                else:
-                    on_activate_cb()
                 client.disconnectFromServer()
         server.newConnection.connect(handle_conn)
         app._server = server
